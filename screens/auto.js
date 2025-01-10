@@ -12,27 +12,31 @@ import * as Types from '../store/types';
 import Blink from '../components/blink';
 import { useNavigation } from '@react-navigation/native';
 import outtakeImages from '../outtake-images';
-import ShotSuccessModal from '../components/shotSuccessModal';
+import CoralModal from "../components/coralModal";
+import AlgaeAutoModal from "../components/algaeAutoModal";
 
 
 function Auto(props) {
-  const [speakerNotes, setSpeakerNotes] = useState(0);
-  const [ampNotes, setAmpNotes] = useState(0);
+  const [coral1, setCoral1] = useState(0);
+  const [coral2, setCoral2] = useState(0);
+  const [coral3, setCoral3] = useState(0);
+  const [coral4, setCoral4] = useState(0);
 
-  const [failedSpeakerNotes, setFailedSpeakerNotes] = useState(0);
-  const [failedAmpNotes, setFailedAmpNotes] = useState(0);
+  const [coralLevel, setCoralLevel] = useState(0);
+
+  const [algaeProcessor, setAlgaeProcessor] = useState(0);
+  const [algaeRobotNet, setAlgaeRobotNet] = useState(0);
+  const [failedAlgaeRobotNet, setFailedAlgaeRobotNet] = useState(0);
+  const [algaeRemovedHigh, setAlgaeRemovedHigh] = useState(0);
+  const [algaeRemovedLow, setAlgaeRemovedLow] = useState(0);
 
   const [mobility, setMobility] = useState(false);
 
-  const [shotModalVisible, setShotModalVisible] = useState(false);
+  const [coralModalVisible, setCoralModalVisible] = useState(false);
+  const [algaeAutoModalVisible, setAlgaeAutoModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
 
   const [autoActions, setAutoActions] = useState([]);
-  const [coordinatesList, setCoordinatesList] = useState([]);
-
-
-  const [heatmap, setHeatmap] = useState([]);
-
 
   const alliance = props.eventReducer.alliance;
   const ampColor = (alliance === 'red') ? '#DA4A19' : '#34BFA1';
@@ -46,36 +50,24 @@ function Auto(props) {
 
 
 
-
-
   useEffect(() => {
     navigation.setOptions({
       title: `Auto | ${matchData.team}`
     })
   }, [])
 
-  useEffect(() => {
-
-    let heatmapTemp = []
-
-    for (let i = 0; i < 10; i++) {
-      heatmapTemp.push([])
-      for (let j = 0; j < 10; j++) {
-        heatmapTemp[i].push(0)
-      }
-    }
-
-    setHeatmap(heatmapTemp)
-  }, [])
-
   const navigate = () => {
-    matchData.autoSpeakerNotes = speakerNotes;
-    matchData.autoAmpNotes = ampNotes;
-    matchData.mobility = mobility;
-    matchData.autoFailedSpeakerNotes = failedSpeakerNotes;
-    matchData.autoFailedAmpNotes = failedAmpNotes;
-    matchData.autoCoordinatesList = coordinatesList;
+    matchData.autoCoral1 = coral1;
+    matchData.autoCoral2 = coral2;
+    matchData.autoCoral3 = coral3;
+    matchData.autoCoral4 = coral4;
+    matchData.autoAlgaeProcessor = algaeProcessor;
+    matchData.autoAlgaeRobotNet = algaeRobotNet;
+    matchData.autoFailedAlgaeRobotNet = failedAlgaeRobotNet;
+    matchData.autoAlgaeRemovedHigh = algaeRemovedHigh;
+    matchData.autoAlgaeRemovedLow = algaeRemovedLow;
     matchData.autoActions = autoActions;
+    matchData.mobility = mobility;
     props.setCurrentMatchData(matchData);
     navigation.navigate('teleop');
   }
@@ -84,12 +76,15 @@ function Auto(props) {
     if(autoActions.length == 0) return;
 
     switch (autoActions[autoActions.length - 1]) {
-      case 'autoSpeaker': setSpeakerNotes(speakerNotes - 1); 
-      setCoordinatesList(coordinatesList.splice(coordinatesList.length-1, 1)); break;
-      case 'autoAmp': setAmpNotes(ampNotes - 1); break;
-      case 'autoFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes - 1); 
-      setCoordinatesList(coordinatesList.splice(coordinatesList.length-1, 1)); break;
-      case 'autoFailedAmp': setFailedAmpNotes(failedAmpNotes - 1); break;
+      case 'algaeProcessor': setAlgaeProcessor(algaeProcessor-1); break;
+      case 'algaeRobotNet': setAlgaeRobotNet(algaeRobotNet-1); break;
+      case 'failedAlgaeRobotNet': setFailedAlgaeRobotNet(failedAlgaeRobotNet-1); break;
+      case 'coral1': setCoral1(coral1-1); break;
+      case 'coral2': setCoral2(coral2-1); break;
+      case 'coral3': setCoral3(coral3-1); break;
+      case 'coral4': setCoral4(coral4-1); break;
+      case 'algaeRemovedHigh': setAlgaeRemovedHigh(algaeRemovedHigh-1); break;
+      case 'algaeRemovedLow': setAlgaeRemovedLow(algaeRemovedLow-1); break;
       default: if (autoActions.length != 0) console.log('Wrong autoAction has been undone');
     }
 
@@ -103,10 +98,15 @@ function Auto(props) {
     temp.push(action);
 
     switch(action) {
-      case 'autoSpeaker': setSpeakerNotes(speakerNotes+1); break;
-      case 'autoAmp': setAmpNotes(ampNotes+1); break;
-      case 'autoFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes+1); break;
-      case 'autoFailedAmp': setFailedAmpNotes(failedAmpNotes+1); break;
+      case 'algaeProcessor': setAlgaeProcessor(algaeProcessor+1); break;
+      case 'algaeRobotNet': setAlgaeRobotNet(algaeRobotNet+1); break;
+      case 'failedAlgaeRobotNet': setFailedAlgaeRobotNet(failedAlgaeRobotNet+1); break;
+      case 'coral1': setCoral1(coral1+1); break;
+      case 'coral2': setCoral2(coral2+1); break;
+      case 'coral3': setCoral3(coral3+1); break;
+      case 'coral4': setCoral4(coral4+1); break;
+      case 'algaeRemovedHigh': setAlgaeRemovedHigh(algaeRemovedHigh+1); break;
+      case 'algaeRemovedLow': setAlgaeRemovedLow(algaeRemovedLow+1); break;
       default: console.log('Invalid action added in auto');
     }
 
@@ -116,15 +116,25 @@ function Auto(props) {
   return (
     <View style={autoStyles.mainContainer}>
 
-      <ShotSuccessModal
-        shotModalVisible={shotModalVisible}
-        setShotModalVisible={setShotModalVisible}
-        matchPhase='auto' modalType={modalType}
-        fieldOrientation={fieldOrientation}
-        autoActions={autoActions}
-        addAction={addAction}
-        coordinatesList={coordinatesList}
-        setCoordinatesList={setCoordinatesList}
+      <CoralModal
+          coralModalVisible={coralModalVisible}
+          setCoralModalVisible={setCoralModalVisible}
+          matchPhase='auto'
+          modalType={modalType}
+          fieldOrientation={fieldOrientation}
+          autoActions={autoActions}
+          addAction={addAction}
+          coralLevel={coralLevel}
+      />
+
+      <AlgaeAutoModal
+          algaeAutoModalVisible={algaeAutoModalVisible}
+          setAlgaeAutoModalVisible={setAlgaeAutoModalVisible}
+          matchPhase='auto'
+          modalType={modalType}
+          fieldOrientation={fieldOrientation}
+          autoActions={autoActions}
+          addAction={addAction}
       />
 
       <ImageBackground
@@ -132,39 +142,47 @@ function Auto(props) {
         source={outtakeImages[fieldOrientation][alliance]}
       >
 
-
         <View style={{ width: "100%", alignSelf: "center" }}>
-          {heatmap && [...Array(heatmap.length).keys()].map((y) => {
-
-
+          {[...Array(10).keys()].map((y) => {
             return (
-              <View style={{ flexDirection: 'row', width: "100%", height: "10%" }}>
-                {heatmap[y] && [...Array(heatmap[y].length).keys()].map((x) => {
+                <View style={{ flexDirection: 'row', width: "100%", height: "10%" }} key={`row-${y}`}>
+                  {[...Array(10).keys()].map((x) => {
+                    return (
+                        <TouchableOpacity
+                            key={`cell-${x}-${y}`}
+                            style={{ borderColor: "black", borderWidth: 0, width: "10%" }}
+                            onPress={() => {
+                              // console.log(y);
+                              if (y<3) {
+                                setCoralLevel(4);
+                                addAction('coral4')
+                              }
+                              else if (y>2 && y<5) {
+                                setCoralLevel(3);
+                                setCoralModalVisible(true);
+                              }
+                              else if (y>4 && y<7) {
+                                setCoralLevel(2);
+                                setCoralModalVisible(true);
+                              }
+                              else {
+                                setCoralLevel(1);
+                                addAction('coral1');
+                              }
+                              // console.log(coralLevel);
 
-                  return (
-                    <TouchableOpacity style={{ borderColor: "black", borderWidth: 0, width: "10%", }} onPress={() => {
-                      setModalType('Speaker')
-                      let temp = coordinatesList;
-                       
-                      if(fieldOrientation == 1) temp[coordinatesList.length] = [9-x, 9-y]; //Make coordinates consistent regardless of field orientation
-                      else if(fieldOrientation == 2) temp[coordinatesList.length] = [x, y];
-
-                      setCoordinatesList(temp);
-                      setShotModalVisible(!shotModalVisible);
-
-                    }}>
-                      <Text></Text>
-                      {/* ^ Do not remove the empty text - we need to trick the button into thinking it has a child for it to work properly */}
-                    </TouchableOpacity>
-                  )
-                })}
-
-
-              </View>
-            )
-
+                            }}
+                        >
+                          <Text></Text>
+                          {/* ^ Do not remove the empty text - we need to trick the button into thinking it has a child for it to work properly */}
+                        </TouchableOpacity>
+                    );
+                  })}
+                </View>
+            );
           })}
         </View>
+
       </ImageBackground>
 
       {/* empty column */}
@@ -175,11 +193,10 @@ function Auto(props) {
             flex: 1,
             alignItems: 'center',
             justifyContent: 'center',
-
           }}
         >
 
-          <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'center' , marginTop: 10}}>
             <Text style={[autoStyles.Font, { fontSize: 16, flex: 0.3, marginBottom: '2%' }]}>Mobility Bonus</Text>
             <Switch
               style={{ flex: 0.7 }}
@@ -189,12 +206,24 @@ function Auto(props) {
           </View>
 
           <View style={{ flex: 0.3, margin: 10, alignItems: 'center' }}>
-            <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Speaker Notes: {failedSpeakerNotes}</Text>
-            <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Amp Notes: {failedAmpNotes}</Text>
+            <Text style={{ fontSize: 20, color: '#000000' }}>Coral Level 1: {coral1}</Text>
+            <Text style={{ fontSize: 20, color: '#000000' }}>Coral Level 2: {coral2}</Text>
+            <Text style={{ fontSize: 20, color: '#000000' }}>Coral Level 3: {coral3}</Text>
+            <Text style={{ fontSize: 20, color: '#000000' }}>Coral Level 4: {coral4}</Text>
           </View>
+
+          <View style={{ flex: 0.2, margin: 10, alignItems: 'center', marginTop: 40}}>
+            <Text style={{ fontSize: 20, color: '#000000' }}>High Algae Removed: {algaeRemovedHigh}</Text>
+            <Text style={{ fontSize: 20, color: '#000000' }}>Low Algae Removed: {algaeRemovedLow}</Text>
+          </View>
+
+          <View style={{ flex: 0.2, margin: 10, alignItems: 'center'}}>
+            <Text style={{ fontSize: 20, color: '#000000' }}>Algae Processor: {algaeProcessor}</Text>
+            <Text style={{ fontSize: 20, color: '#000000' }}>Successful Algae Net: {algaeRobotNet}</Text>
+            <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Algae Net: {failedAlgaeRobotNet}</Text>
+          </View>
+
           <View style={{ flex: 0.3, alignItems: 'center' }}>
-            <Text style={{ fontSize: 20 }}>Speaker Notes: {speakerNotes}</Text>
-            <Text style={{ fontSize: 20 }}>Amp Notes: {ampNotes}</Text>
           </View>
 
         </View>
@@ -211,9 +240,9 @@ function Auto(props) {
           
           <TouchableOpacity style={[autoStyles.AmpButton, { width: 300, marginBottom: 10, backgroundColor: ampColor, borderBottomColor: ampBorderColor }]} onPress={() => {
             setModalType('Amp');
-            setShotModalVisible(!shotModalVisible);
+            setAlgaeAutoModalVisible(!algaeAutoModalVisible);
           }}>
-            <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Amp</Text>
+            <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Algae</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={[autoStyles.UndoButton, { width: 300, marginBottom: 10 }]} onPress={() => undo()}>
@@ -288,8 +317,7 @@ const autoStyles = StyleSheet.create({
   PrematchButtonFont: {
     color: 'white',
     fontSize: 25
-  },//yo wsg if u readin this u a tru g :))))
-  //thx bruh :)))
+  },
 });
 
 const mapStateToProps = (state) => state;

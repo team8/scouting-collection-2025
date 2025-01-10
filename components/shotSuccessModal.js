@@ -47,7 +47,7 @@ function ShotSuccessModal(props) {
               This is purely visual.
            */}
 
-          <Image style={{ height: 175, width: 175, marginBottom: 10 }} source={require('../assets/game_pieces/note.png')} />
+          <Image style={{ height: 175, width: 175, marginBottom: 10 }} source={require('../assets/game_pieces/coral.png')} />
 
           <View style={{ flexDirection: 'column', alignItems: 'stretch' }}>
 
