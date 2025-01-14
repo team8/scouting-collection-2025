@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput, Switch, TouchableOpacity } from "react-native";
-import { Slider } from 'react-native-elements';
+import {ButtonGroup, Slider} from 'react-native-elements';
 import { connect } from "react-redux";
 import * as Types from "../store/types";
 import { useNavigation } from '@react-navigation/native';
@@ -15,6 +15,9 @@ function Postmatch(props) {
     const [defenseRating, setDefenseRating] = useState(0);
     const [intakeRating, setIntakeRating] = useState(0);
     const [climbRating, setClimbRating] = useState(0);
+
+    const [climbStatus, setClimbStatus] = useState(0);
+    const endgameText = ['N/A', 'Park', 'Shallow Cage', 'Deep Cage'];
 
     const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
 
@@ -35,7 +38,7 @@ function Postmatch(props) {
         matchData.climbNotes = climbNotes.replace(/ /g, '>').replace(/,/g, '<');
         matchData.coopertition = coopertition;
         matchData.died = robotDied;
-
+        matchData.climbStatus = climbStatus;
         matchData.driverRating = driverRating;
         matchData.defenseRating = defenseRating;
         matchData.intakeRating = intakeRating;
@@ -94,6 +97,16 @@ function Postmatch(props) {
                     />
                 </View>
                 
+            </View>
+            <View>
+                <ButtonGroup
+                    onPress={setClimbStatus}
+                    selectedIndex={climbStatus}
+                    buttons={endgameText}
+                    buttonStyle={postmatchStyles.ButtonGroup}
+                    containerStyle={{height: 50}}
+                    selectedButtonStyle={{ backgroundColor: '#24a2b6', borderBottomColor: '#188191' }}
+                />
             </View>
             <View style={postmatchStyles.Row}>
                 <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1, textAlign: "center"}]}>Driving</Text>
@@ -179,6 +192,8 @@ const postmatchStyles = StyleSheet.create({
         color: 'white',
         fontSize: 25
     },
+    ButtonGroup: {
+    }
 })
 
 const mapStateToProps = (state) => state;

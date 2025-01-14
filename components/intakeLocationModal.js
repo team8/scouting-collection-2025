@@ -18,10 +18,16 @@ function IntakeLocationModal(props) {
                         <Image style={{width: 130, height: 130}} source={require('../assets/game_pieces/coral.png')} />
                     </View>
                     <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                        <TouchableOpacity style={intakeModalStyles.Substation} onPress={() => props.addIntakeLocation('substation')}>
+                        <TouchableOpacity style={intakeModalStyles.Substation} onPress={() => {
+                            props.addAction('substationIntake')
+                            props.setIntakeModalVisible(false)
+                        }}>
                             <Text style={intakeModalStyles.ButtonFont}>Source Substation</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={intakeModalStyles.GroundSubstation} onPress={() => props.addIntakeLocation('ground')}>
+                        <TouchableOpacity style={intakeModalStyles.GroundSubstation} onPress={() => {
+                            props.addAction('groundIntake')
+                            props.setIntakeModalVisible(false)
+                        }}>
                             <Text style={intakeModalStyles.ButtonFont}>Ground Substation</Text>
                         </TouchableOpacity>
                     </View>

@@ -10,29 +10,37 @@ import { connect } from 'react-redux';
 import * as Types from '../store/types';
 import { useNavigation } from '@react-navigation/native';
 import outtakeImages from '../outtake-images';
-import ShotSuccessModal from '../components/shotSuccessModal';
 import IntakeLocationModal from '../components/intakeLocationModal';
+import CoralModal from "../components/coralModal";
+import AlgaeTeleopModal from "../components/algaeTeleopModal";
 
 function Teleop(props) {
   const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
 
-  const [speakerNotes, setSpeakerNotes] = useState(0);
-  const [ampNotes, setAmpNotes] = useState(0);
+  const [coral1, setCoral1] = useState(0);
+  const [coral2, setCoral2] = useState(0);
+  const [coral3, setCoral3] = useState(0);
+  const [coral4, setCoral4] = useState(0);
 
-  const [failedSpeakerNotes, setFailedSpeakerNotes] = useState(0);
-  const [failedAmpNotes, setFailedAmpNotes] = useState(0);
+  const [coralLevel, setCoralLevel] = useState(0);
 
+  const [algaeProcessor, setAlgaeProcessor] = useState(0);
+  const [algaeRobotNet, setAlgaeRobotNet] = useState(0);
+  const [failedAlgaeRobotNet, setFailedAlgaeRobotNet] = useState(0);
+  const [algaeRemovedHigh, setAlgaeRemovedHigh] = useState(0);
+  const [algaeRemovedLow, setAlgaeRemovedLow] = useState(0);
+  const [algaeHumanNet, setAlgaeHumanNet] = useState(0);
+  const [failedAlgaeHumanNet, setFailedAlgaeHumanNet] = useState(0);
 
-
-  const [shotModalVisible, setShotModalVisible] = useState(false);
+  const [coralModalVisible, setCoralModalVisible] = useState(false);
   const [intakeModalVisible, setIntakeModalVisible] = useState(false);
+  const [algaeTeleopModalVisible, setAlgaeTeleopModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
 
   const [teleopActions, setTeleopActions] = useState([]);
 
   const [groundIntakes, setGroundIntakes] = useState(0);
   const [substationIntakes, setSubstationIntakes] = useState(0);;
-  const [coordinatesList, setCoordinatesList] = useState([]);
 
   const alliance = props.eventReducer.alliance;
   const allianceBorderColor = (alliance === 'red') ? '#d10000' : '#0000d1';
@@ -50,46 +58,43 @@ function Teleop(props) {
     })
   }, [])
 
-  const [heatmap, setHeatmap] = useState([]);
-
-  useEffect(() => {
-
-    let heatmapTemp = []
-    for (let i = 0; i < 10; i++) {
-      heatmapTemp.push([])
-      for (let j = 0; j < 10; j++) {
-        heatmapTemp[i].push(0)
-      }
-    }
-    setHeatmap(heatmapTemp)
-  }, [])
-
 
 
   const navigate = () => {
-    matchData.teleopSpeakerNotes = speakerNotes;
-    matchData.teleopAmpNotes = ampNotes;
-    matchData.teleopFailedSpeakerNotes = failedSpeakerNotes;
-    matchData.teleopFailedAmpNotes = failedAmpNotes;
-    matchData.teleopCoordinatesList = coordinatesList;
+    matchData.teleopCoral1 = coral1;
+    matchData.teleopCoral2 = coral2;
+    matchData.teleopCoral3 = coral3;
+    matchData.teleopCoral4 = coral4;
+    matchData.teleopAlgaeProcessor = algaeProcessor;
+    matchData.teleopAlgaeHumanNet = algaeHumanNet;
+    matchData.teleopAlgaeRobotNet = algaeRobotNet;
+    matchData.failedTeleopAlgaeHumanNet = failedAlgaeHumanNet;
+    matchData.failedTeleopAlgaeRobotNet = failedAlgaeRobotNet;
+    matchData.teleopAlgaeRemovedHigh = algaeRemovedHigh;
+    matchData.teleopAlgaeRemovedLow = algaeRemovedLow;
     matchData.groundIntakes = groundIntakes;
     matchData.substationIntakes = substationIntakes;
     matchData.teleopActions = teleopActions;
     props.setCurrentMatchData(matchData);
 
-    navigation.navigate('endgame');
+    navigation.navigate('postmatch');
   }
 
   const undo = () => {
     if(teleopActions.length == 0) return;
 
     switch (teleopActions[teleopActions.length - 1]) {
-      case 'teleopSpeaker': setSpeakerNotes(speakerNotes - 1); 
-      setCoordinatesList(coordinatesList.splice(coordinatesList.length-1, 1)); break;
-      case 'teleopAmp': setAmpNotes(ampNotes - 1); break;
-      case 'teleopFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes - 1); 
-      setCoordinatesList(coordinatesList.splice(coordinatesList.length-1, 1)); break;
-      case 'teleopFailedAmp': setFailedAmpNotes(failedAmpNotes - 1); break;
+      case 'algaeProcessor': setAlgaeProcessor(algaeProcessor-1); break;
+      case 'algaeRobotNet': setAlgaeRobotNet(algaeRobotNet-1); break;
+      case 'failedAlgaeRobotNet': setFailedAlgaeRobotNet(failedAlgaeRobotNet-1); break;
+      case 'algaeHumanNet': setAlgaeHumanNet(algaeHumanNet-1); break;
+      case 'failedAlgaeHumanNet': setFailedAlgaeHumanNet(failedAlgaeHumanNet-1);break;
+      case 'coral1': setCoral1(coral1-1); break;
+      case 'coral2': setCoral2(coral2-1); break;
+      case 'coral3': setCoral3(coral3-1); break;
+      case 'coral4': setCoral4(coral4-1); break;
+      case 'algaeRemovedHigh': setAlgaeRemovedHigh(algaeRemovedHigh-1); break;
+      case 'algaeRemovedLow': setAlgaeRemovedLow(algaeRemovedLow-1); break;
       case 'groundIntake': setGroundIntakes(groundIntakes - 1); break;
       case 'substationIntake': setSubstationIntakes(substationIntakes - 1); break;
       default: if (teleopActions.length != 0) console.log('Wrong teleopAction has been undone');
@@ -100,31 +105,24 @@ function Teleop(props) {
     setTeleopActions(temp);
   }
 
-  const addIntakeLocation = (location) => {
-    // let localMatchData = matchData;
-    // localMatchData.teleopActions.push(location);
-
-    if (location == "ground") setGroundIntakes(groundIntakes + 1);
-    else setSubstationIntakes(substationIntakes + 1);
-
-
-    // props.setCurrentMatchData(localMatchData);
-    setIntakeModalVisible(false);
-
-    let temp = teleopActions;
-    temp.push(location + "Intake");
-    setTeleopActions(temp);;
-  }
-
   const addAction = (action) => {
     let temp = teleopActions;
     temp.push(action);
 
     switch (action) {
-      case 'teleopSpeaker': setSpeakerNotes(speakerNotes + 1); break;
-      case 'teleopAmp': setAmpNotes(ampNotes + 1); break;
-      case 'teleopFailedSpeaker': setFailedSpeakerNotes(failedSpeakerNotes + 1); break;
-      case 'teleopFailedAmp': setFailedAmpNotes(failedAmpNotes + 1); break;
+      case 'algaeProcessor': setAlgaeProcessor(algaeProcessor+1); break;
+      case 'algaeRobotNet': setAlgaeRobotNet(algaeRobotNet+1); break;
+      case 'failedAlgaeRobotNet': setFailedAlgaeRobotNet(failedAlgaeRobotNet+1); break;
+      case 'algaeHumanNet': setAlgaeHumanNet(algaeHumanNet+1); break;
+      case 'failedAlgaeHumanNet': setFailedAlgaeHumanNet(failedAlgaeHumanNet+1);break;
+      case 'coral1': setCoral1(coral1+1); break;
+      case 'coral2': setCoral2(coral2+1); break;
+      case 'coral3': setCoral3(coral3+1); break;
+      case 'coral4': setCoral4(coral4+1); break;
+      case 'algaeRemovedHigh': setAlgaeRemovedHigh(algaeRemovedHigh+1); break;
+      case 'algaeRemovedLow': setAlgaeRemovedLow(algaeRemovedLow+1); break;
+      case 'groundIntake': setGroundIntakes(groundIntakes+1); break;
+      case 'substationIntake': setSubstationIntakes(substationIntakes+1); break;
       default: console.log('Invalid action added in teleop');
     }
 
@@ -137,71 +135,78 @@ function Teleop(props) {
       <IntakeLocationModal
         intakeModalVisible={intakeModalVisible}
         setIntakeModalVisible={setIntakeModalVisible}
-        addIntakeLocation={addIntakeLocation}
-      />
-
-      <ShotSuccessModal
-        shotModalVisible={shotModalVisible}
-        setShotModalVisible={setShotModalVisible}
-        matchPhase='teleop' modalType={modalType}
-        fieldOrientation={fieldOrientation}
-        teleopActions={teleopActions}
-        setTeleopActions={setTeleopActions}
         addAction={addAction}
-        coordinatesList={coordinatesList}
-        setCoordinatesList={setCoordinatesList}
       />
 
+      <CoralModal
+          coralModalVisible={coralModalVisible}
+          setCoralModalVisible={setCoralModalVisible}
+          matchPhase='teleop'
+          modalType={modalType}
+          fieldOrientation={fieldOrientation}
+          autoActions={teleopActions}
+          addAction={addAction}
+          coralLevel={coralLevel}
+      />
 
-      {/* <Text style={{alignSelf: (fieldOrientation == 1) ? "flex-start": "flex-end"}}>Test</Text> */}
-
-
-
-
+      <AlgaeTeleopModal
+          algaeAutoModalVisible={algaeTeleopModalVisible}
+          setAlgaeAutoModalVisible={setAlgaeTeleopModalVisible}
+          matchPhase='teleop'
+          modalType={modalType}
+          fieldOrientation={fieldOrientation}
+          autoActions={teleopActions}
+          addAction={addAction}
+      />
 
       <ImageBackground
         style={{ flex: 0.7, justifyContent: 'center', alignSelf: fieldOrientation == 1 ? "flex-start" : "flex-end" }}
         source={outtakeImages[fieldOrientation][alliance]}
       >
-
-
         <View style={{ width: "100%", alignSelf: "center" }}>
-          {heatmap && [...Array(heatmap.length).keys()].map((y) => {
-
-
+          {[...Array(10).keys()].map((y) => {
             return (
-              <View style={{ flexDirection: 'row', width: "100%", height: "10%" }}>
-                {heatmap[y] && [...Array(heatmap[y].length).keys()].map((x) => {
+                <View style={{ flexDirection: 'row', width: "100%", height: "10%" }} key={`row-${y}`}>
+                  {[...Array(10).keys()].map((x) => {
+                    return (
+                        <TouchableOpacity
+                            key={`cell-${x}-${y}`}
+                            style={{ borderColor: "black", borderWidth: 0, width: "10%" }}
+                            onPress={() => {
+                              // console.log(y);
+                              if (y<3) {
+                                setCoralLevel(4);
+                                addAction('coral4')
+                              }
+                              else if (y>2 && y<5) {
+                                setCoralLevel(3);
+                                setCoralModalVisible(true);
+                              }
+                              else if (y>4 && y<7) {
+                                setCoralLevel(2);
+                                setCoralModalVisible(true);
+                              }
+                              else {
+                                setCoralLevel(1);
+                                addAction('coral1');
+                              }
+                              // console.log(coralLevel);
 
-                  return (
-                    <TouchableOpacity style={{ width: "10%", }} onPress={() => {
-                      setModalType('Speaker'); //This is redundant but eh whatever
-                      let temp = coordinatesList;
-
-                      if(fieldOrientation == 1) temp[coordinatesList.length] = [9-x, 9-y]; //Make coordinates consistent regardless of field orientation
-                      else if(fieldOrientation == 2) temp[coordinatesList.length] = [x, y];
-
-                      setCoordinatesList(temp);
-                      setShotModalVisible(!shotModalVisible);
-
-                    }}>
-                      <Text></Text>
-                      {/* ^ Do not remove the empty text - we need to trick the button into thinking it has a child for it to work properly */}
-                    </TouchableOpacity>
-                  )
-                })}
-
-
-              </View>
-            )
-
+                            }}
+                        >
+                          <Text></Text>
+                          {/* ^ Do not remove the empty text - we need to trick the button into thinking it has a child for it to work properly */}
+                        </TouchableOpacity>
+                    );
+                  })}
+                </View>
+            );
           })}
         </View>
       </ImageBackground>
 
 
       <View style={{ flex: 0.3 }}
-        addIntakeLocation={addIntakeLocation}
         intakeModalVisible={intakeModalVisible}
         setIntakeModalVisible={setIntakeModalVisible}
       >
@@ -218,23 +223,27 @@ function Teleop(props) {
             }}
           >
 
-            <View style={{ flex: 1, alignItems: 'center', paddingVertical: 20 }}>
-              <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Speaker Notes: {failedSpeakerNotes + matchData.autoFailedSpeakerNotes}</Text>
-              <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Amp Notes: {failedAmpNotes + matchData.autoFailedAmpNotes}</Text>
-            </View>
-            <View style={{ flex: 1, alignItems: 'center', paddingVertical: 20 }}>
-              <Text style={{ fontSize: 20 }}>Speaker Notes: {speakerNotes + matchData.autoSpeakerNotes}</Text>
-              <Text style={{ fontSize: 20 }}>Amp Notes: {ampNotes + matchData.autoAmpNotes}</Text>
-            </View>
-            <View style={{ flex: 1, alignItems: 'center', paddingVertical: 20 }}>
+            <View style={{ flex: 1, alignItems: 'center', marginTop: 10}}>
+              <Text style={{ fontSize: 20, color: '#000000' }}>Coral Level 1: {coral1}</Text>
+              <Text style={{ fontSize: 20, color: '#000000' }}>Coral Level 2: {coral2}</Text>
+              <Text style={{ fontSize: 20, color: '#000000' }}>Coral Level 3: {coral3}</Text>
+              <Text style={{ fontSize: 20, color: '#000000' }}>Coral Level 4: {coral4}{"\n"}</Text>
+              <Text style={{ fontSize: 20, color: '#000000' }}>High Algae Removed: {algaeRemovedHigh}</Text>
+              <Text style={{ fontSize: 20, color: '#000000' }}>Low Algae Removed: {algaeRemovedLow}{"\n"}</Text>
+              <Text style={{ fontSize: 20, color: '#000000' }}>Algae Processor: {algaeProcessor}</Text>
+              <Text style={{ fontSize: 20, color: '#000000' }}>Robot Algae Net: {algaeRobotNet}</Text>
+              <Text style={{ fontSize: 20, color: '#000000' }}>Human Algae Net: {algaeHumanNet}</Text>
+              <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Robot Algae Net: {failedAlgaeRobotNet}</Text>
+              <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Human Algae Net: {failedAlgaeHumanNet}{"\n"}</Text>
               <Text style={{ fontSize: 20 }}>Ground Intakes: {groundIntakes}</Text>
               <Text style={{ fontSize: 20 }}>Substation Intakes: {substationIntakes}</Text>
             </View>
+
           </View>
 
           <View
             style={{
-              flex: 1.4,
+              flex: 0.8,
               alignItems: 'center',
               justifyContent: 'center',
               paddingBottom: 10,
@@ -245,27 +254,20 @@ function Teleop(props) {
               <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Intake</Text>
             </TouchableOpacity>
 
-            <View style={{flex: 1.5, flexDirection: "row"}}>
-              <TouchableOpacity style={[teleopStyles.AmpButton, { marginBottom: 10, backgroundColor: ampColor, borderBottomColor: ampBorderColor }]} onPress={() => {
-              addAction("teleopAmp");
-              }}>
-              <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont, {textAlign: "center"}]}>{"Success.\nAmp"}</Text>
+            <TouchableOpacity style={[ teleopStyles.AmpButton, { flex: 1, width: 300, marginBottom: 10, backgroundColor: ampColor, borderBottomColor: ampBorderColor }]} onPress={() => {
+            setAlgaeTeleopModalVisible(!algaeTeleopModalVisible)
+            }}>
+            <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont, {textAlign: "center"}]}>{"Algae"}</Text>
+            </TouchableOpacity>
+            <View style={{flex: 1.1, flexDirection: "row"}}>
+              <TouchableOpacity style={[teleopStyles.UndoButton, { width: 300, marginBottom: 10, marginRight:5, marginLeft: 10 }]} onPress={() => undo()}>
+                <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Undo</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[teleopStyles.AmpButton, { marginBottom: 10, backgroundColor: ampColor, borderBottomColor: ampBorderColor }]} onPress={() => {
-              addAction("teleopFailedAmp");
-              }}>
-              <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont, {textAlign: "center"}]}>{"Failed\nAmp"}</Text>
+
+              <TouchableOpacity style={[teleopStyles.NextButton, { width: 300, marginRight: 10, marginBottom: 10, marginLeft: 5, justifyContent: 'center', alignItems: 'center' }]} onPress={() => navigate()}>
+                <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont, {textAlign: 'center'}]}>Continue to Postmatch</Text>
               </TouchableOpacity>
             </View>
-
-            <TouchableOpacity style={[teleopStyles.UndoButton, { width: 300, marginBottom: 10 }]} onPress={() => undo()}>
-              <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Undo</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={[teleopStyles.NextButton, { width: 300 }]} onPress={() => navigate()}>
-              <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Continue to Endgame</Text>
-            </TouchableOpacity>
-
           </View>
         </View>
 
@@ -342,8 +344,7 @@ function Teleop(props) {
     PrematchButtonFont: {
       color: 'white',
       fontSize: 25
-  },//yo wsg if u readin this u a tru g :))))
-  //thx bruh :)))
+  },
 });
 
 const mapStateToProps = (state) => state;
@@ -357,6 +358,5 @@ const mapDispatchToProps = (dispatch) => ({
     }),
 });
 
-      const connectComponent = connect(mapStateToProps, mapDispatchToProps);
-      export default connectComponent(Teleop);
-
+const connectComponent = connect(mapStateToProps, mapDispatchToProps);
+export default connectComponent(Teleop);
