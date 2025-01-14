@@ -107,7 +107,7 @@ const algaeAutoModalStyles = StyleSheet.create({
         marginBottom: 10,
         width: '100%',
         height: '60%',
-        marginLeft: 10,
+        // marginLeft: 10,
         alignContent: 'center',
         justifyContent: 'center'
     },

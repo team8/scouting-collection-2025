@@ -11,6 +11,7 @@ function Postmatch(props) {
     const [coopertition, setCoopertition] = useState(false);
     const [climbNotes, setClimbNotes] = useState("");
     const [robotDied, setRobotDied] = useState(false);
+    const [robotTipped, setRobotTipped] = useState(false);
     const [driverRating, setDriverRating] = useState(0);
     const [defenseRating, setDefenseRating] = useState(0);
     const [intakeRating, setIntakeRating] = useState(0);
@@ -38,6 +39,7 @@ function Postmatch(props) {
         matchData.climbNotes = climbNotes.replace(/ /g, '>').replace(/,/g, '<');
         matchData.coopertition = coopertition;
         matchData.died = robotDied;
+        matchData.tipped = robotTipped;
         matchData.climbStatus = climbStatus;
         matchData.driverRating = driverRating;
         matchData.defenseRating = defenseRating;
@@ -88,13 +90,23 @@ function Postmatch(props) {
                         onChangeText={(text) => setClimbNotes(text)}
                     />
                 </View>
-                <View style={{flex: 0.2, marginLeft: 25, alignItems: "center"}}>
-                    <Text style={[postmatchStyles.Font, {fontSize: 16, flex: 0.3}]}>Robot Died/Tipped</Text>
-                    <Switch
-                        style={{flex: 0.7}}
-                        onValueChange={(value) => setRobotDied(value)}
-                        value={robotDied}
-                    />
+                <View style={{flex: 0.2, marginLeft: 25, alignItems: "center", flexDirection: "column"}}>
+                    <View style={{flex: 0.7, alignItems: "center", flexDirection: "row"}}>
+                        <Text style={[postmatchStyles.Font, {fontSize: 16, flex: 0.3, marginRight: 25}]}>Died</Text>
+                        <Text style={[postmatchStyles.Font, {fontSize: 16, flex: 0.3, marginLeft: 10}]}>Tipped</Text>
+                    </View>
+                    <View style={{flex: 0.7, alignItems: "center", flexDirection: "row"}}>
+                        <Switch
+                            style={{flex: 0.7, marginLeft: 25, marginRight: 5}}
+                            onValueChange={(value) => setRobotDied(value)}
+                            value={robotDied}
+                        />
+                        <Switch
+                            style={{flex: 0.7}}
+                            onValueChange={(value) => setRobotTipped(value)}
+                            value={robotTipped}
+                        />
+                    </View>
                 </View>
                 
             </View>
