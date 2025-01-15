@@ -197,7 +197,7 @@ function Auto(props) {
         >
 
           <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'center' , marginTop: 10}}>
-            <Text style={[autoStyles.Font, { fontSize: 16, flex: 0.3, marginBottom: '2%' }]}>Mobility Bonus</Text>
+            <Text style={[autoStyles.Font, { fontSize: 18, flex: 0.3, marginBottom: '2%' }]}>Mobility Bonus</Text>
             <Switch
               style={{ flex: 0.7 }}
               onValueChange={(value) => setMobility(value)}
@@ -205,26 +205,18 @@ function Auto(props) {
             />
           </View>
 
-          <View style={{ flex: 0.3, margin: 10, alignItems: 'center' }}>
-            <Text style={{ fontSize: 20, color: '#000000' }}>Coral Level 1: {coral1}</Text>
-            <Text style={{ fontSize: 20, color: '#000000' }}>Coral Level 2: {coral2}</Text>
-            <Text style={{ fontSize: 20, color: '#000000' }}>Coral Level 3: {coral3}</Text>
-            <Text style={{ fontSize: 20, color: '#000000' }}>Coral Level 4: {coral4}</Text>
-          </View>
-
-          <View style={{ flex: 0.2, margin: 10, alignItems: 'center', marginTop: 40}}>
-            <Text style={{ fontSize: 20, color: '#000000' }}>High Algae Removed: {algaeRemovedHigh}</Text>
-            <Text style={{ fontSize: 20, color: '#000000' }}>Low Algae Removed: {algaeRemovedLow}</Text>
-          </View>
-
-          <View style={{ flex: 0.2, margin: 10, alignItems: 'center'}}>
-            <Text style={{ fontSize: 20, color: '#000000' }}>Algae Processor: {algaeProcessor}</Text>
-            <Text style={{ fontSize: 20, color: '#000000' }}>Successful Algae Net: {algaeRobotNet}</Text>
+          <View style={{ flex: 1, margin: 10, alignItems: 'center' }}>
+            <Text style={{ fontSize: 20, color: '#753da1' }}>Coral Level 1: {coral1}</Text>
+            <Text style={{ fontSize: 20, color: '#753da1' }}>Coral Level 2: {coral2}</Text>
+            <Text style={{ fontSize: 20, color: '#753da1' }}>Coral Level 3: {coral3}</Text>
+            <Text style={{ fontSize: 20, color: '#753da1' }}>Coral Level 4: {coral4}{"\n"}</Text>
+            <Text style={{ fontSize: 20, color: '#2d3696' }}>High Algae Removed: {algaeRemovedHigh}</Text>
+            <Text style={{ fontSize: 20, color: '#2d3696' }}>Low Algae Removed: {algaeRemovedLow}{"\n"}</Text>
+            <Text style={{ fontSize: 20, color: '#178044' }}>Algae Processor: {algaeProcessor}</Text>
+            <Text style={{ fontSize: 20, color: '#178044' }}>Successful Algae Net: {algaeRobotNet}</Text>
             <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Algae Net: {failedAlgaeRobotNet}</Text>
           </View>
 
-          <View style={{ flex: 0.3, alignItems: 'center' }}>
-          </View>
 
         </View>
 

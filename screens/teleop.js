@@ -224,15 +224,15 @@ function Teleop(props) {
           >
 
             <View style={{ flex: 1, alignItems: 'center', marginTop: 10}}>
-              <Text style={{ fontSize: 20, color: '#000000' }}>Coral Level 1: {coral1}</Text>
-              <Text style={{ fontSize: 20, color: '#000000' }}>Coral Level 2: {coral2}</Text>
-              <Text style={{ fontSize: 20, color: '#000000' }}>Coral Level 3: {coral3}</Text>
-              <Text style={{ fontSize: 20, color: '#000000' }}>Coral Level 4: {coral4}{"\n"}</Text>
-              <Text style={{ fontSize: 20, color: '#000000' }}>High Algae Removed: {algaeRemovedHigh}</Text>
-              <Text style={{ fontSize: 20, color: '#000000' }}>Low Algae Removed: {algaeRemovedLow}{"\n"}</Text>
-              <Text style={{ fontSize: 20, color: '#000000' }}>Algae Processor: {algaeProcessor}</Text>
-              <Text style={{ fontSize: 20, color: '#000000' }}>Robot Algae Net: {algaeRobotNet}</Text>
-              <Text style={{ fontSize: 20, color: '#000000' }}>Human Algae Net: {algaeHumanNet}</Text>
+              <Text style={{ fontSize: 20, color: '#753da1' }}>Coral Level 1: {coral1}</Text>
+              <Text style={{ fontSize: 20, color: '#753da1' }}>Coral Level 2: {coral2}</Text>
+              <Text style={{ fontSize: 20, color: '#753da1' }}>Coral Level 3: {coral3}</Text>
+              <Text style={{ fontSize: 20, color: '#753da1' }}>Coral Level 4: {coral4}{"\n"}</Text>
+              <Text style={{ fontSize: 20, color: '#2d3696' }}>High Algae Removed: {algaeRemovedHigh}</Text>
+              <Text style={{ fontSize: 20, color: '#2d3696' }}>Low Algae Removed: {algaeRemovedLow}{"\n"}</Text>
+              <Text style={{ fontSize: 20, color: '#178044' }}>Algae Processor: {algaeProcessor}</Text>
+              <Text style={{ fontSize: 20, color: '#178044' }}>Robot Algae Net: {algaeRobotNet}</Text>
+              <Text style={{ fontSize: 20, color: '#178044' }}>Human Algae Net: {algaeHumanNet}</Text>
               <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Robot Algae Net: {failedAlgaeRobotNet}</Text>
               <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Human Algae Net: {failedAlgaeHumanNet}{"\n"}</Text>
               <Text style={{ fontSize: 20 }}>Ground Intakes: {groundIntakes}</Text>
