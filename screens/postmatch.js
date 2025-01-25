@@ -40,7 +40,8 @@ function Postmatch(props) {
         matchData.coopertition = coopertition;
         matchData.died = robotDied;
         matchData.tipped = robotTipped;
-        matchData.climbStatus = climbStatus;
+
+        matchData.climbStatus = (climbStatus == 0 ? "N/A" : (climbStatus == 1 ? "park" : (climbStatus == 2 ? "shallow" : (climbStatus == 3 && "deep"))));
         matchData.driverRating = driverRating;
         matchData.defenseRating = defenseRating;
         matchData.intakeRating = intakeRating;
