@@ -236,7 +236,7 @@ function Teleop(props) {
               <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Robot Algae Net: {failedAlgaeRobotNet}</Text>
               <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Human Algae Net: {failedAlgaeHumanNet}{"\n"}</Text>
               <Text style={{ fontSize: 20 }}>Ground Intakes: {groundIntakes}</Text>
-              <Text style={{ fontSize: 20 }}>Substation Intakes: {substationIntakes}</Text>
+              <Text style={{ fontSize: 20, paddingBottom: 20}}>Substation Intakes: {substationIntakes}</Text>
             </View>
 
           </View>
@@ -343,7 +343,7 @@ function Teleop(props) {
   },
     PrematchButtonFont: {
       color: 'white',
-      fontSize: 25
+      fontSize: 20
   },
 });
 
