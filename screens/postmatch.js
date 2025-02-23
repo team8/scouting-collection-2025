@@ -14,9 +14,9 @@ function Postmatch(props) {
     const [robotDied, setRobotDied] = useState(false);
     const [robotTipped, setRobotTipped] = useState(false);
     const [driverRating, setDriverRating] = useState(0);
-    const [defenseRating, setDefenseRating] = useState(0);
-    const [intakeRating, setIntakeRating] = useState(0);
-    const [climbRating, setClimbRating] = useState(0);
+    const [defenseRating, setDefenseRating] = useState(-1);
+    const [intakeRating, setIntakeRating] = useState(-1);
+    const [climbRating, setClimbRating] = useState(-1);
 
     const [climbStatus, setClimbStatus] = useState(0);
     const endgameText = ['N/A', 'Park', 'Shallow Cage', 'Deep Cage'];
@@ -94,8 +94,8 @@ function Postmatch(props) {
                 </View>
                 <View style={{flex: 0.2, marginLeft: 25, alignItems: "center", flexDirection: "column"}}>
                     <View style={{flex: 0.7, alignItems: "center", flexDirection: "row"}}>
-                        <Text style={[postmatchStyles.Font, {fontSize: 16, flex: 0.3, marginRight: 25}]}>Died</Text>
-                        <Text style={[postmatchStyles.Font, {fontSize: 16, flex: 0.3, marginLeft: 10}]}>Tipped</Text>
+                        <Text style={[postmatchStyles.Font, {fontSize: 15, flex: 0.3, marginRight: 1}]}>Died</Text>
+                        <Text style={[postmatchStyles.Font, {fontSize: 15, flex: 0.3, marginLeft: 15}]}>Tipped</Text>
                     </View>
                     <View style={{flex: 0.7, alignItems: "center", flexDirection: "row"}}>
                         <Switch
@@ -128,7 +128,10 @@ function Postmatch(props) {
                     <Slider
                         thumbTintColor='#24a2b6'
                         value={driverRating}
-                        onValueChange={(driverRating) => setDriverRating(Math.round(driverRating*5))} 
+                        minimumValue={0}
+                        maximumValue={5}
+                        step={1}
+                        onValueChange={(dr) => setDriverRating(dr)} 
                     />
                     <Text>{driverRating.toString()}</Text>
                 </View>
@@ -137,7 +140,10 @@ function Postmatch(props) {
                     <Slider
                         thumbTintColor='#24a2b6'
                         value={defenseRating}
-                        onValueChange={(defenseRating) => setDefenseRating(Math.round(defenseRating*6)-1)} 
+                        minimumValue={-1}
+                        maximumValue={5}
+                        step={1}
+                        onValueChange={(d) => setDefenseRating(d)} 
                     />
                     <Text>{defenseRating == -1 ? 'N/a' : defenseRating.toString()}</Text>
                 </View>
@@ -148,7 +154,10 @@ function Postmatch(props) {
                     <Slider
                         thumbTintColor='#24a2b6'
                         value={intakeRating}
-                        onValueChange={(intakeRating) => setIntakeRating(Math.round(intakeRating*6)-1)} />
+                        minimumValue={-1}
+                        maximumValue={5}
+                        step={1}
+                        onValueChange={(i) => setIntakeRating(i)} />
                     <Text>{intakeRating == -1 ? 'N/a' : intakeRating.toString()}</Text>
                 </View>
                 <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1, marginLeft: 5, textAlign: "center"}]} textAlign = "center">Climb</Text>
@@ -156,7 +165,10 @@ function Postmatch(props) {
                     <Slider
                         thumbTintColor='#24a2b6'
                         value={climbRating}
-                        onValueChange={(intakeRating) => setClimbRating(Math.round(intakeRating*6)-1)} />
+                        minimumValue={-1}
+                        maximumValue={5}
+                        step={1}
+                        onValueChange={(c) => setClimbRating(c)} />
                     <Text>{climbRating == -1 ? 'N/a' : climbRating.toString()}</Text>
                 </View>
             </View>
