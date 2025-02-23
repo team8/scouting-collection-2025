@@ -236,7 +236,7 @@ function Teleop(props) {
               <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Robot Algae Net: {failedAlgaeRobotNet}</Text>
               <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Human Algae Net: {failedAlgaeHumanNet}{"\n"}</Text>
               <Text style={{ fontSize: 20 }}>Ground Intakes: {groundIntakes}</Text>
-              <Text style={{ fontSize: 20, paddingBottom: 20}}>Substation Intakes: {substationIntakes}</Text>
+              <Text style={{ fontSize: 20}}>Substation Intakes: {substationIntakes}</Text>
             </View>
 
           </View>
@@ -250,7 +250,7 @@ function Teleop(props) {
               paddingHorizontal: 19
             }}
           >
-            <TouchableOpacity style={[teleopStyles.IntakeButton, { width: 300, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor }]} onPress={() => { setIntakeModalVisible(true) }}>
+            <TouchableOpacity style={[teleopStyles.IntakeButton, { width: 300, marginTop: 25, marginBottom: 10, backgroundColor: alliance, borderColor: allianceBorderColor }]} onPress={() => { setIntakeModalVisible(true) }}>
               <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Intake</Text>
             </TouchableOpacity>
 

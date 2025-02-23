@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TextInput, Switch, TouchableOpacity } from "react-native";
 import {ButtonGroup, Slider} from 'react-native-elements';
+// import Slider from 'react-native-slider';
 import { connect } from "react-redux";
 import * as Types from "../store/types";
 import { useNavigation } from '@react-navigation/native';
@@ -127,18 +128,18 @@ function Postmatch(props) {
                     <Slider
                         thumbTintColor='#24a2b6'
                         value={driverRating}
-                        onValueChange={(driverRating) => setDriverRating(driverRating)} 
+                        onValueChange={(driverRating) => setDriverRating(Math.round(driverRating*5))} 
                     />
-                    <Text>{(Math.round(driverRating*5)).toString()}</Text>
+                    <Text>{driverRating.toString()}</Text>
                 </View>
                 <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1, marginLeft: 5, textAlign: "center"}]}>Defense</Text>
                 <View style={{flex: 0.4, alignItems: 'stretch'}}>
                     <Slider
                         thumbTintColor='#24a2b6'
                         value={defenseRating}
-                        onValueChange={(defenseRating) => setDefenseRating(defenseRating)} 
+                        onValueChange={(defenseRating) => setDefenseRating(Math.round(defenseRating*6)-1)} 
                     />
-                    <Text>{(Math.round(defenseRating*6)-1 == -1 ? 'N/a' : Math.round(defenseRating*6)-1).toString()}</Text>
+                    <Text>{defenseRating == -1 ? 'N/a' : defenseRating.toString()}</Text>
                 </View>
             </View>
             <View style={postmatchStyles.Row}>
@@ -147,16 +148,16 @@ function Postmatch(props) {
                     <Slider
                         thumbTintColor='#24a2b6'
                         value={intakeRating}
-                        onValueChange={(intakeRating) => setIntakeRating(intakeRating)} />
-                    <Text>{(Math.round(intakeRating*6)-1 == -1 ? 'N/a' : Math.round(intakeRating*6)-1).toString()}</Text>
+                        onValueChange={(intakeRating) => setIntakeRating(Math.round(intakeRating*6)-1)} />
+                    <Text>{intakeRating == -1 ? 'N/a' : intakeRating.toString()}</Text>
                 </View>
                 <Text style={[postmatchStyles.LabelText, postmatchStyles.Font, {fontSize: 22, marginTop: 10, flex: 0.1, marginLeft: 5, textAlign: "center"}]} textAlign = "center">Climb</Text>
                 <View style={{flex: 0.4, alignItems: 'stretch'}}>
                     <Slider
                         thumbTintColor='#24a2b6'
                         value={climbRating}
-                        onValueChange={(intakeRating) => setClimbRating(intakeRating)} />
-                    <Text>{(Math.round(climbRating*6)-1 == -1 ? 'N/a' : Math.round(climbRating*6)-1).toString()}</Text>
+                        onValueChange={(intakeRating) => setClimbRating(Math.round(intakeRating*6)-1)} />
+                    <Text>{climbRating == -1 ? 'N/a' : climbRating.toString()}</Text>
                 </View>
             </View>
             <View style={[postmatchStyles.Row, {height: 100 }]}>
