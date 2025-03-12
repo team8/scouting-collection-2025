@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, StyleSheet, ImageBackground, Switch, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
+import { Dropdown } from 'react-native-element-dropdown';
 import {connect} from 'react-redux';
 import * as Types from '../store/types';
 import fieldImages from '../field.js';
 
 let startingPositions = require('../assets/button_settings/starting_positions.json');
+const scouterNames = [
+  { label: 'Jennifer Yang', value: 'Jennifer Yang' },
+  { label: 'Johnny Gu', value: 'Johnny Gu' },
+  { label: 'Olivia Cho', value: 'Olivia Cho' },
+  { label: 'Reed Truong', value: 'Reed Truong' },
+  { label: 'Riaan Shah', value: 'Riaan Shah' },
+  { label: 'Shaurya Thumalapalli', value: 'Shaurya Thumalapalli' },
+  { label: 'Tanmay Adya', value: 'Tanmay Adya' },
+  { label: 'Zoe Mummah-Su', value: 'Zoe Mummah-Su'},
+  { label: 'Xander Deisseroth', value: 'Xander Deisseroth' },  
+];
 
 function Prematch(props) {
     const [name, setName] = useState("");
+    const [isFocus, setIsFocus] = useState(false);
     const [predWinner, setPredWinner] = useState("red");
     const [currentRobotPositionName, setCurrentRobotPositionName] = useState("");
     const [fieldOrientation, setFieldOrientation] = useState(props.eventReducer.fieldOrientation);
@@ -71,10 +84,26 @@ function Prematch(props) {
         <View style={{ flex: 1, backgroundColor: '#eaeaea', paddingLeft: 60, paddingRight: 20 }}>
              <View style={prematchStyles.InputContainer}>
                 <View style={prematchStyles.Row}>
-                    <TextInput
+                    {/* <TextInput
                         style={[prematchStyles.Font, { borderBottomWidth: 3, borderBottomColor: '#d4d4d4', flex: 1,}]}
                         placeholder="Scouter Name, Ex: Buca Depepo"
                         onChangeText={(text) => setName(text)}
+                    /> */}
+                    <Dropdown
+                      style={[prematchStyles.dropdown, isFocus && { borderColor: 'gray' }]}
+                      data={scouterNames}
+                      value={name}
+                      placeholderStyle={prematchStyles.placeholderStyle}
+                      selectedTextStyle={prematchStyles.selectedTextStyle}
+                      labelField="label"
+                      valueField="value"              
+                      inputSearchStyle={prematchStyles.inputSearchStyle}              
+                      placeholder={!isFocus ? 'Select Scouter Name' : '...'}
+                      onFocus={() => setIsFocus(true)}
+                      onChange={item => {
+                        setName(item.value);
+                        setIsFocus(false);
+                      }}            
                     />
                     <Switch
                         trackColor={{true: 'blue', false: 'red'}}
@@ -124,6 +153,12 @@ function Prematch(props) {
 }
 
 const prematchStyles = StyleSheet.create({
+    dropdown: {
+      height: 50,
+      width: '52%',
+      borderColor: "gray",
+      borderWidth: 0.5,
+    },
     Clicky: {
         justifyContent: 'center', //Centered horizontally
         alignItems: 'center', //Centered vertically
@@ -174,7 +209,25 @@ const prematchStyles = StyleSheet.create({
       borderRadius: 7,
       borderBottomWidth: 5,
       borderColor: '#006400'
-    }
+    },
+    icon: {
+      marginRight: 0,
+    },
+    placeholderStyle: {
+      fontSize: 16,
+    },
+    selectedTextStyle: {
+      fontSize: 16,
+    },
+    iconStyle: {
+      width: 20,
+      height: 20,
+    },
+    inputSearchStyle: {
+      height: 40,
+      fontSize: 16,
+    },
+
 })
 
 const mapStateToProps = state => state;

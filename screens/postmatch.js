@@ -13,10 +13,10 @@ function Postmatch(props) {
     const [climbNotes, setClimbNotes] = useState("");
     const [robotDied, setRobotDied] = useState(false);
     const [robotTipped, setRobotTipped] = useState(false);
-    const [driverRating, setDriverRating] = useState(0);
-    const [defenseRating, setDefenseRating] = useState(-1);
-    const [intakeRating, setIntakeRating] = useState(-1);
-    const [climbRating, setClimbRating] = useState(-1);
+    const [driverRating, setDriverRating] = useState(0.0);
+    const [defenseRating, setDefenseRating] = useState(-1.0);
+    const [intakeRating, setIntakeRating] = useState(-1.0);
+    const [climbRating, setClimbRating] = useState(-1.0);
 
     const [climbStatus, setClimbStatus] = useState(0);
     const endgameText = ['N/A', 'Park', 'Shallow Cage', 'Deep Cage'];
@@ -130,7 +130,7 @@ function Postmatch(props) {
                         value={driverRating}
                         minimumValue={0}
                         maximumValue={5}
-                        step={1}
+                        step={0.1}
                         onValueChange={(dr) => setDriverRating(dr)} 
                     />
                     <Text>{driverRating.toString()}</Text>
@@ -142,7 +142,7 @@ function Postmatch(props) {
                         value={defenseRating}
                         minimumValue={-1}
                         maximumValue={5}
-                        step={1}
+                        step={0.1}
                         onValueChange={(d) => setDefenseRating(d)} 
                     />
                     <Text>{defenseRating == -1 ? 'N/a' : defenseRating.toString()}</Text>
@@ -156,7 +156,7 @@ function Postmatch(props) {
                         value={intakeRating}
                         minimumValue={-1}
                         maximumValue={5}
-                        step={1}
+                        step={0.1}
                         onValueChange={(i) => setIntakeRating(i)} />
                     <Text>{intakeRating == -1 ? 'N/a' : intakeRating.toString()}</Text>
                 </View>
@@ -167,7 +167,7 @@ function Postmatch(props) {
                         value={climbRating}
                         minimumValue={-1}
                         maximumValue={5}
-                        step={1}
+                        step={0.1}
                         onValueChange={(c) => setClimbRating(c)} />
                     <Text>{climbRating == -1 ? 'N/a' : climbRating.toString()}</Text>
                 </View>
