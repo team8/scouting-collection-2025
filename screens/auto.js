@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import outtakeImages from '../outtake-images';
 import CoralModal from "../components/coralModal";
 import AlgaeAutoModal from "../components/algaeAutoModal";
+import AutoIntakeModal from '../components/autoIntakeModal';
 
 
 function Auto(props) {
@@ -21,6 +22,8 @@ function Auto(props) {
   const [coral2, setCoral2] = useState(0);
   const [coral3, setCoral3] = useState(0);
   const [coral4, setCoral4] = useState(0);
+
+  const [highlightedCell, setHighlightedCell] = useState(null); 
 
   const [coralLevel, setCoralLevel] = useState(0);
 
@@ -32,8 +35,14 @@ function Auto(props) {
 
   const [mobility, setMobility] = useState(false);
 
+  const [groundIntakes, setGroundIntakes] = useState(0);
+  const [substationIntakes, setSubstationIntakes] = useState(0);
+  const [failedGroundIntakes, setFailedGroundIntakes] = useState(0);
+  const [failedSubstationIntakes, setFailedSubstationIntakes] = useState(0);
+
   const [coralModalVisible, setCoralModalVisible] = useState(false);
   const [algaeAutoModalVisible, setAlgaeAutoModalVisible] = useState(false);
+  const [intakeModalVisible, setIntakeModalVisible] = useState(false);
   const [modalType, setModalType] = useState('');
 
   const [autoActions, setAutoActions] = useState([]);
@@ -47,8 +56,6 @@ function Auto(props) {
   const matchData = JSON.parse(JSON.stringify(props.eventReducer.currentMatchData));
 
   const navigation = useNavigation();
-
-
 
   useEffect(() => {
     navigation.setOptions({
@@ -68,6 +75,10 @@ function Auto(props) {
     matchData.autoAlgaeRemovedLow = algaeRemovedLow;
     matchData.autoActions = autoActions;
     matchData.mobility = mobility;
+    matchData.autoGroundIntakes = groundIntakes;
+    matchData.autoSubstationIntakes = substationIntakes;
+    matchData.failedAutoGroundIntakes = failedGroundIntakes;
+    matchData.failedAutoSubstationIntakes = failedSubstationIntakes;
     props.setCurrentMatchData(matchData);
     navigation.navigate('teleop');
   }
@@ -85,6 +96,10 @@ function Auto(props) {
       case 'coral4': setCoral4(coral4-1); break;
       case 'algaeRemovedHigh': setAlgaeRemovedHigh(algaeRemovedHigh-1); break;
       case 'algaeRemovedLow': setAlgaeRemovedLow(algaeRemovedLow-1); break;
+      case 'groundIntake': setGroundIntakes(groundIntakes-1); break;
+      case 'substationIntake': setSubstationIntakes(substationIntakes-1); break;
+      case 'failedGroundIntake': setFailedGroundIntakes(failedGroundIntakes-1); break;
+      case 'failedSubstationIntake': setFailedSubstationIntakes(failedSubstationIntakes-1); break;
       default: if (autoActions.length != 0) console.log('Wrong autoAction has been undone');
     }
 
@@ -107,6 +122,10 @@ function Auto(props) {
       case 'coral4': setCoral4(coral4+1); break;
       case 'algaeRemovedHigh': setAlgaeRemovedHigh(algaeRemovedHigh+1); break;
       case 'algaeRemovedLow': setAlgaeRemovedLow(algaeRemovedLow+1); break;
+      case 'groundIntake': setGroundIntakes(groundIntakes+1); break;
+      case 'substationIntake': setSubstationIntakes(substationIntakes+1); break;
+      case 'failedGroundIntake': setFailedGroundIntakes(failedGroundIntakes+1); break;
+      case 'failedSubstationIntake': setFailedSubstationIntakes(failedSubstationIntakes+1); break;
       default: console.log('Invalid action added in auto');
     }
 
@@ -115,6 +134,12 @@ function Auto(props) {
 
   return (
     <View style={autoStyles.mainContainer}>
+
+  <AutoIntakeModal
+        intakeModalVisible={intakeModalVisible}
+        setIntakeModalVisible={setIntakeModalVisible}
+        addAction={addAction}
+      />
 
       <CoralModal
           coralModalVisible={coralModalVisible}
@@ -137,53 +162,74 @@ function Auto(props) {
           addAction={addAction}
       />
 
-      <ImageBackground
-        style={{ flex: 0.7, justifyContent: 'center', alignSelf: fieldOrientation == 1 ? "flex-start" : "flex-end" }}
-        source={outtakeImages[fieldOrientation][alliance]}
-      >
+<ImageBackground
+      style={{
+        flex: 0.7,
+        justifyContent: 'center',
+        alignSelf: fieldOrientation === 1 ? "flex-start" : "flex-end"
+      }}
+      source={outtakeImages[fieldOrientation][alliance]}
+    >
+      <View style={{ width: "100%", alignSelf: "center" }}>
+        {[...Array(10).keys()].map((y) => (
+          <View 
+            style={{ flexDirection: 'row', width: "100%", height: "10%" }} 
+            key={`row-${y}`}
+          >
+            {[...Array(10).keys()].map((x) => {
+              const l1Selected = y > 6;
+              const l4Selected = y < 3;
+              const isHighlighted = (l1Selected && (highlightedCell===1) || (l4Selected && (highlightedCell === 4)));
 
-        <View style={{ width: "100%", alignSelf: "center" }}>
-          {[...Array(10).keys()].map((y) => {
-            return (
-                <View style={{ flexDirection: 'row', width: "100%", height: "10%" }} key={`row-${y}`}>
-                  {[...Array(10).keys()].map((x) => {
-                    return (
-                        <TouchableOpacity
-                            key={`cell-${x}-${y}`}
-                            style={{ borderColor: "black", borderWidth: 0, width: "10%" }}
-                            onPress={() => {
-                              // console.log(y);
-                              if (y<3) {
-                                setCoralLevel(4);
-                                addAction('coral4')
-                              }
-                              else if (y>2 && y<5) {
-                                setCoralLevel(3);
-                                setCoralModalVisible(true);
-                              }
-                              else if (y>4 && y<7) {
-                                setCoralLevel(2);
-                                setCoralModalVisible(true);
-                              }
-                              else {
-                                setCoralLevel(1);
-                                addAction('coral1');
-                              }
-                              // console.log(coralLevel);
+              return (
+                <TouchableOpacity
+                  key={`cell-${x}-${y}`}
+                  style={[
+                    { 
+                      borderColor: "black",
+                      borderWidth: 0, 
+                      width: "10%", 
+                      justifyContent: 'center', 
+                      alignItems: 'center' 
+                    },
+                    isHighlighted && { backgroundColor: "rgba(0, 255, 0, 0.5)" }
+                  ]}
+                  onPress={() => {
+                    console.log(`Pressed cell: (${x}, ${y})`);
+                    if (y < 3) {
+                      setCoralLevel(4);
+                      setHighlightedCell(4);
+                      setTimeout(() => {
+                        setHighlightedCell(0);
+                      }, 500);                
+                      console.log("L4 selected");
+                      addAction('coral4');
+                    } else if (y > 2 && y < 5) {
+                      setCoralLevel(3);
+                      setCoralModalVisible(true);
+                    } else if (y > 4 && y < 7) {
+                      setCoralLevel(2);
+                      setCoralModalVisible(true);
+                    } else {
+                      setCoralLevel(1);
+                      setHighlightedCell(1);
+                      setTimeout(() => {
+                        setHighlightedCell(0);
+                      }, 500);                
+                      console.log("L1 selected");
+                      addAction('coral1');
+                    }
+                  }}
+                >
+                  <Text> </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        ))}
+      </View>
+    </ImageBackground>
 
-                            }}
-                        >
-                          <Text></Text>
-                          {/* ^ Do not remove the empty text - we need to trick the button into thinking it has a child for it to work properly */}
-                        </TouchableOpacity>
-                    );
-                  })}
-                </View>
-            );
-          })}
-        </View>
-
-      </ImageBackground>
 
       {/* empty column */}
       <View style={{ flex: 0.3 }}>
@@ -196,10 +242,10 @@ function Auto(props) {
           }}
         >
 
-          <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'center' , marginTop: 10}}>
-            <Text style={[autoStyles.Font, { fontSize: 18, flex: 0.3, marginBottom: '2%' }]}>Mobility Bonus</Text>
+          <View style={{ flex: 0.1, justifyContent: 'center', alignItems: 'center' , marginTop: 10, flexDirection: 'row'}}>
+            <Text style={[autoStyles.Font, { marginLeft: 50, fontSize: 18, marginRight: 5}]}>Mobility Bonus</Text>
             <Switch
-              style={{ flex: 0.7 }}
+              style={{marginLeft: 5}}
               onValueChange={(value) => setMobility(value)}
               value={mobility}
             />
@@ -211,10 +257,15 @@ function Auto(props) {
             <Text style={{ fontSize: 20, color: '#753da1' }}>Coral Level 3: {coral3}</Text>
             <Text style={{ fontSize: 20, color: '#753da1' }}>Coral Level 4: {coral4}{"\n"}</Text>
             <Text style={{ fontSize: 20, color: '#2d3696' }}>High Algae Removed: {algaeRemovedHigh}</Text>
-            <Text style={{ fontSize: 20, color: '#2d3696' }}>Low Algae Removed: {algaeRemovedLow}{"\n"}</Text>
+            <Text style={{ fontSize: 20, color: '#2d3696' }}>Low Algae Removed: {algaeRemovedLow}</Text>
             <Text style={{ fontSize: 20, color: '#178044' }}>Algae Processor: {algaeProcessor}</Text>
             <Text style={{ fontSize: 20, color: '#178044' }}>Successful Algae Net: {algaeRobotNet}</Text>
-            <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Algae Net: {failedAlgaeRobotNet}</Text>
+            <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Algae Net: {failedAlgaeRobotNet}{"\n"}</Text>
+            <Text style={{ fontSize: 20 }}>Ground Intakes: {groundIntakes}</Text>
+            <Text style={{ fontSize: 20}}>Substation Intakes: {substationIntakes}</Text>
+            <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Ground Intakes: {failedGroundIntakes}</Text>
+            <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Substation Intakes: {failedSubstationIntakes}</Text>
+          
           </View>
 
 
@@ -229,6 +280,10 @@ function Auto(props) {
 
           }}
         >
+          <TouchableOpacity style={[autoStyles.SpeakerButton, { width: 300, marginTop: 25, marginBottom: 10, backgroundColor: alliance }]} onPress={() => { setIntakeModalVisible(true) }}>
+            <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Intake</Text>
+          </TouchableOpacity>
+          
           
           <TouchableOpacity style={[autoStyles.AmpButton, { width: 300, marginBottom: 10, backgroundColor: ampColor, borderBottomColor: ampBorderColor }]} onPress={() => {
             setModalType('Amp');
@@ -236,15 +291,15 @@ function Auto(props) {
           }}>
             <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Algae</Text>
           </TouchableOpacity>
-
-          <TouchableOpacity style={[autoStyles.UndoButton, { width: 300, marginBottom: 10 }]} onPress={() => undo()}>
-            <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Undo</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={[autoStyles.NextButton, { width: 300 }]} onPress={() => navigate()}>
-            <Blink text='Continue to Teleop' />
-          </TouchableOpacity>
-
+            <View style={{flex: 1.0, flexDirection: "row", alignItems: 'center', justifyContent: 'center', marginTop: 10}}>
+              <TouchableOpacity style={[autoStyles.UndoButton, { width: 300, height: 100, marginBottom: 10, marginLeft: 26, marginRight: 5}]} onPress={() => undo()}>
+                <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Undo</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity style={[autoStyles.NextButton, { width: 300, height: 100, marginBottom: 10, marginLeft: 5, marginRight: 26}]} onPress={() => navigate()}>
+                <Blink text='Continue to Teleop' />
+              </TouchableOpacity>
+        </View>
         </View>
       </View>
     </View>

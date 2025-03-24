@@ -36,18 +36,6 @@ function AlgaeTeleopModal(props) {
                         }}>
                             <Text style={algaeAutoModalStyles.ButtonFont}>Failed Robot Net</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={algaeAutoModalStyles.FailedButton} onPress={() => {
-                            props.addAction('algaeHumanNet')
-                            props.setAlgaeAutoModalVisible(false)
-                        }}>
-                            <Text style={algaeAutoModalStyles.ButtonFont}>Human Net</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={algaeAutoModalStyles.RealFailedButton} onPress={() => {
-                            props.addAction('failedAlgaeHumanNet')
-                            props.setAlgaeAutoModalVisible(false)
-                        }}>
-                            <Text style={algaeAutoModalStyles.ButtonFont}>Failed Human Net</Text>
-                        </TouchableOpacity>
                     </View>
                     <View style={{ flex: 0.5, width: '100%' }}>
                         <TouchableOpacity style={algaeAutoModalStyles.CancelButton} onPress={() => props.setAlgaeAutoModalVisible(false)}>

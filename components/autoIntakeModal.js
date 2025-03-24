@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Modal from 'react-native-modal';
 
-function IntakeLocationModal(props) {
+function AutoIntakeModal(props) {
     return (
         <Modal animationInTiming={50} animationIn='fadeIn' animationOutTiming={50} animationOut='fadeOut'
         style={{ alignItems: 'center', justifyContent: 'center', height: '50%', flex: 0.6}}
@@ -145,4 +145,4 @@ const intakeModalStyles = StyleSheet.create({
 })
 
 
-export default IntakeLocationModal;
+export default AutoIntakeModal;

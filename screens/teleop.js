@@ -23,14 +23,13 @@ function Teleop(props) {
   const [coral4, setCoral4] = useState(0);
 
   const [coralLevel, setCoralLevel] = useState(0);
+  const [highlightedCell, setHighlightedCell] = useState(null); 
 
   const [algaeProcessor, setAlgaeProcessor] = useState(0);
   const [algaeRobotNet, setAlgaeRobotNet] = useState(0);
   const [failedAlgaeRobotNet, setFailedAlgaeRobotNet] = useState(0);
   const [algaeRemovedHigh, setAlgaeRemovedHigh] = useState(0);
   const [algaeRemovedLow, setAlgaeRemovedLow] = useState(0);
-  const [algaeHumanNet, setAlgaeHumanNet] = useState(0);
-  const [failedAlgaeHumanNet, setFailedAlgaeHumanNet] = useState(0);
 
   const [coralModalVisible, setCoralModalVisible] = useState(false);
   const [intakeModalVisible, setIntakeModalVisible] = useState(false);
@@ -40,7 +39,10 @@ function Teleop(props) {
   const [teleopActions, setTeleopActions] = useState([]);
 
   const [groundIntakes, setGroundIntakes] = useState(0);
-  const [substationIntakes, setSubstationIntakes] = useState(0);;
+  const [substationIntakes, setSubstationIntakes] = useState(0);
+  const [failedGroundIntakes, setFailedGroundIntakes] = useState(0);
+  const [failedSubstationIntakes, setFailedSubstationIntakes] = useState(0);
+  
 
   const alliance = props.eventReducer.alliance;
   const allianceBorderColor = (alliance === 'red') ? '#d10000' : '#0000d1';
@@ -66,15 +68,15 @@ function Teleop(props) {
     matchData.teleopCoral3 = coral3;
     matchData.teleopCoral4 = coral4;
     matchData.teleopAlgaeProcessor = algaeProcessor;
-    matchData.teleopAlgaeHumanNet = algaeHumanNet;
     matchData.teleopAlgaeRobotNet = algaeRobotNet;
-    matchData.failedTeleopAlgaeHumanNet = failedAlgaeHumanNet;
     matchData.failedTeleopAlgaeRobotNet = failedAlgaeRobotNet;
     matchData.teleopAlgaeRemovedHigh = algaeRemovedHigh;
     matchData.teleopAlgaeRemovedLow = algaeRemovedLow;
     matchData.groundIntakes = groundIntakes;
     matchData.substationIntakes = substationIntakes;
     matchData.teleopActions = teleopActions;
+    matchData.failedTeleopGroundIntakes = failedGroundIntakes;
+    matchData.failedTeleopSubstationIntakes = failedSubstationIntakes;
     props.setCurrentMatchData(matchData);
 
     navigation.navigate('postmatch');
@@ -87,8 +89,6 @@ function Teleop(props) {
       case 'algaeProcessor': setAlgaeProcessor(algaeProcessor-1); break;
       case 'algaeRobotNet': setAlgaeRobotNet(algaeRobotNet-1); break;
       case 'failedAlgaeRobotNet': setFailedAlgaeRobotNet(failedAlgaeRobotNet-1); break;
-      case 'algaeHumanNet': setAlgaeHumanNet(algaeHumanNet-1); break;
-      case 'failedAlgaeHumanNet': setFailedAlgaeHumanNet(failedAlgaeHumanNet-1);break;
       case 'coral1': setCoral1(coral1-1); break;
       case 'coral2': setCoral2(coral2-1); break;
       case 'coral3': setCoral3(coral3-1); break;
@@ -97,6 +97,8 @@ function Teleop(props) {
       case 'algaeRemovedLow': setAlgaeRemovedLow(algaeRemovedLow-1); break;
       case 'groundIntake': setGroundIntakes(groundIntakes - 1); break;
       case 'substationIntake': setSubstationIntakes(substationIntakes - 1); break;
+      case 'failedGroundIntake': setFailedGroundIntakes(failedGroundIntakes-1); break;
+      case 'failedSubstationIntake': setFailedSubstationIntakes(failedSubstationIntakes-1); break;
       default: if (teleopActions.length != 0) console.log('Wrong teleopAction has been undone');
     }
     
@@ -113,8 +115,6 @@ function Teleop(props) {
       case 'algaeProcessor': setAlgaeProcessor(algaeProcessor+1); break;
       case 'algaeRobotNet': setAlgaeRobotNet(algaeRobotNet+1); break;
       case 'failedAlgaeRobotNet': setFailedAlgaeRobotNet(failedAlgaeRobotNet+1); break;
-      case 'algaeHumanNet': setAlgaeHumanNet(algaeHumanNet+1); break;
-      case 'failedAlgaeHumanNet': setFailedAlgaeHumanNet(failedAlgaeHumanNet+1);break;
       case 'coral1': setCoral1(coral1+1); break;
       case 'coral2': setCoral2(coral2+1); break;
       case 'coral3': setCoral3(coral3+1); break;
@@ -123,6 +123,8 @@ function Teleop(props) {
       case 'algaeRemovedLow': setAlgaeRemovedLow(algaeRemovedLow+1); break;
       case 'groundIntake': setGroundIntakes(groundIntakes+1); break;
       case 'substationIntake': setSubstationIntakes(substationIntakes+1); break;
+      case 'failedGroundIntake': setFailedGroundIntakes(failedGroundIntakes+1); break;
+      case 'failedSubstationIntake': setFailedSubstationIntakes(failedSubstationIntakes+1); break;
       default: console.log('Invalid action added in teleop');
     }
 
@@ -168,14 +170,31 @@ function Teleop(props) {
             return (
                 <View style={{ flexDirection: 'row', width: "100%", height: "10%" }} key={`row-${y}`}>
                   {[...Array(10).keys()].map((x) => {
+                    const l1Selected = y > 6;
+                    const l4Selected = y < 3;
+                    const isHighlighted = (l1Selected && (highlightedCell===1) || (l4Selected && (highlightedCell === 4)));
+                    
                     return (
                         <TouchableOpacity
                             key={`cell-${x}-${y}`}
-                            style={{ borderColor: "black", borderWidth: 0, width: "10%" }}
+                            style={[
+                              { 
+                                borderColor: "black",
+                                borderWidth: 0, 
+                                width: "10%", 
+                                justifyContent: 'center', 
+                                alignItems: 'center' 
+                              },
+                              isHighlighted && { backgroundColor: "rgba(0, 255, 0, 0.5)" }
+                            ]}
                             onPress={() => {
                               // console.log(y);
                               if (y<3) {
                                 setCoralLevel(4);
+                                setHighlightedCell(4);
+                                setTimeout(() => {
+                                  setHighlightedCell(0);
+                                }, 500);                          
                                 addAction('coral4')
                               }
                               else if (y>2 && y<5) {
@@ -188,6 +207,10 @@ function Teleop(props) {
                               }
                               else {
                                 setCoralLevel(1);
+                                setHighlightedCell(1);
+                                setTimeout(() => {
+                                  setHighlightedCell(0);
+                                }, 500);                          
                                 addAction('coral1');
                               }
                               // console.log(coralLevel);
@@ -232,11 +255,11 @@ function Teleop(props) {
               <Text style={{ fontSize: 20, color: '#2d3696' }}>Low Algae Removed: {algaeRemovedLow}{"\n"}</Text>
               <Text style={{ fontSize: 20, color: '#178044' }}>Algae Processor: {algaeProcessor}</Text>
               <Text style={{ fontSize: 20, color: '#178044' }}>Robot Algae Net: {algaeRobotNet}</Text>
-              <Text style={{ fontSize: 20, color: '#178044' }}>Human Algae Net: {algaeHumanNet}</Text>
               <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Robot Algae Net: {failedAlgaeRobotNet}</Text>
-              <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Human Algae Net: {failedAlgaeHumanNet}{"\n"}</Text>
               <Text style={{ fontSize: 20 }}>Ground Intakes: {groundIntakes}</Text>
               <Text style={{ fontSize: 20}}>Substation Intakes: {substationIntakes}</Text>
+              <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Ground Intakes: {failedGroundIntakes}</Text>
+              <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Substation Intakes: {failedSubstationIntakes}</Text>
             </View>
 
           </View>

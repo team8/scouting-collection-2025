@@ -130,7 +130,7 @@ function Postmatch(props) {
                         value={driverRating}
                         minimumValue={0}
                         maximumValue={5}
-                        step={0.1}
+                        step={0.5}
                         onValueChange={(dr) => setDriverRating(dr)} 
                     />
                     <Text>{driverRating.toString()}</Text>
@@ -142,7 +142,7 @@ function Postmatch(props) {
                         value={defenseRating}
                         minimumValue={-1}
                         maximumValue={5}
-                        step={0.1}
+                        step={0.5}
                         onValueChange={(d) => setDefenseRating(d)} 
                     />
                     <Text>{defenseRating == -1 ? 'N/a' : defenseRating.toString()}</Text>
@@ -156,7 +156,7 @@ function Postmatch(props) {
                         value={intakeRating}
                         minimumValue={-1}
                         maximumValue={5}
-                        step={0.1}
+                        step={0.5}
                         onValueChange={(i) => setIntakeRating(i)} />
                     <Text>{intakeRating == -1 ? 'N/a' : intakeRating.toString()}</Text>
                 </View>
@@ -167,7 +167,7 @@ function Postmatch(props) {
                         value={climbRating}
                         minimumValue={-1}
                         maximumValue={5}
-                        step={0.1}
+                        step={0.5}
                         onValueChange={(c) => setClimbRating(c)} />
                     <Text>{climbRating == -1 ? 'N/a' : climbRating.toString()}</Text>
                 </View>
