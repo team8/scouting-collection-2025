@@ -50,6 +50,8 @@ function Auto(props) {
   const alliance = props.eventReducer.alliance;
   const ampColor = (alliance === 'red') ? '#DA4A19' : '#34BFA1';
   const ampBorderColor = (alliance === 'red') ? '#C03D25' : '#289E85';
+  const intakeColor ="#9c60bf";
+  const intakeBorderColor = "#734c8a";
 
   const fieldOrientation = props.eventReducer.fieldOrientation;
 
@@ -273,14 +275,14 @@ function Auto(props) {
 
         <View
           style={{
-            flex: 0.8,
+            flex: 0.65,
             alignItems: 'center',
             justifyContent: 'center',
             paddingBottom: 10,
 
           }}
         >
-          <TouchableOpacity style={[autoStyles.SpeakerButton, { width: 300, marginTop: 25, marginBottom: 10, backgroundColor: alliance }]} onPress={() => { setIntakeModalVisible(true) }}>
+          <TouchableOpacity style={[autoStyles.AmpButton, { width: 300, marginBottom: 5, backgroundColor: intakeColor, borderBottomColor: intakeBorderColor }]} onPress={() => { setIntakeModalVisible(true) }}>
             <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Intake</Text>
           </TouchableOpacity>
           
@@ -291,12 +293,12 @@ function Auto(props) {
           }}>
             <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Algae</Text>
           </TouchableOpacity>
-            <View style={{flex: 1.0, flexDirection: "row", alignItems: 'center', justifyContent: 'center', marginTop: 10}}>
-              <TouchableOpacity style={[autoStyles.UndoButton, { width: 300, height: 100, marginBottom: 10, marginLeft: 26, marginRight: 5}]} onPress={() => undo()}>
+            <View style={{flex: 0.7, flexDirection: "row", alignItems: 'center', justifyContent: 'center', marginTop: 10}}>
+              <TouchableOpacity style={[autoStyles.UndoButton, { width: 300, height: 80, marginBottom: 10, marginRight: 5, marginLeft: 5}]} onPress={() => undo()}>
                 <Text style={[autoStyles.PrematchFont, autoStyles.PrematchButtonFont]}>Undo</Text>
               </TouchableOpacity>
               
-              <TouchableOpacity style={[autoStyles.NextButton, { width: 300, height: 100, marginBottom: 10, marginLeft: 5, marginRight: 26}]} onPress={() => navigate()}>
+              <TouchableOpacity style={[autoStyles.NextButton, { width: 300, height: 80, marginBottom: 10, marginLeft: 5, marginRight: 5}]} onPress={() => navigate()}>
                 <Blink text='Continue to Teleop' />
               </TouchableOpacity>
         </View>

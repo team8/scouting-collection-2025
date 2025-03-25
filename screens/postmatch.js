@@ -128,9 +128,9 @@ function Postmatch(props) {
                     <Slider
                         thumbTintColor='#24a2b6'
                         value={driverRating}
-                        minimumValue={0}
-                        maximumValue={5}
-                        step={0.5}
+                        minimumValue={0.0}
+                        maximumValue={5.0}
+                        step={1}
                         onValueChange={(dr) => setDriverRating(dr)} 
                     />
                     <Text>{driverRating.toString()}</Text>
@@ -140,9 +140,9 @@ function Postmatch(props) {
                     <Slider
                         thumbTintColor='#24a2b6'
                         value={defenseRating}
-                        minimumValue={-1}
-                        maximumValue={5}
-                        step={0.5}
+                        minimumValue={-1.0}
+                        maximumValue={5.0}
+                        step={1}
                         onValueChange={(d) => setDefenseRating(d)} 
                     />
                     <Text>{defenseRating == -1 ? 'N/a' : defenseRating.toString()}</Text>
@@ -156,7 +156,7 @@ function Postmatch(props) {
                         value={intakeRating}
                         minimumValue={-1}
                         maximumValue={5}
-                        step={0.5}
+                        step={1}
                         onValueChange={(i) => setIntakeRating(i)} />
                     <Text>{intakeRating == -1 ? 'N/a' : intakeRating.toString()}</Text>
                 </View>
@@ -167,7 +167,7 @@ function Postmatch(props) {
                         value={climbRating}
                         minimumValue={-1}
                         maximumValue={5}
-                        step={0.5}
+                        step={1}
                         onValueChange={(c) => setClimbRating(c)} />
                     <Text>{climbRating == -1 ? 'N/a' : climbRating.toString()}</Text>
                 </View>

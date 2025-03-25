@@ -255,7 +255,7 @@ function Teleop(props) {
               <Text style={{ fontSize: 20, color: '#2d3696' }}>Low Algae Removed: {algaeRemovedLow}{"\n"}</Text>
               <Text style={{ fontSize: 20, color: '#178044' }}>Algae Processor: {algaeProcessor}</Text>
               <Text style={{ fontSize: 20, color: '#178044' }}>Robot Algae Net: {algaeRobotNet}</Text>
-              <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Robot Algae Net: {failedAlgaeRobotNet}</Text>
+              <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Robot Algae Net: {failedAlgaeRobotNet}{"\n"}</Text>
               <Text style={{ fontSize: 20 }}>Ground Intakes: {groundIntakes}</Text>
               <Text style={{ fontSize: 20}}>Substation Intakes: {substationIntakes}</Text>
               <Text style={{ fontSize: 20, color: '#f54747', fontWeight: 'bold' }}>Failed Ground Intakes: {failedGroundIntakes}</Text>
@@ -283,11 +283,11 @@ function Teleop(props) {
             <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont, {textAlign: "center"}]}>{"Algae"}</Text>
             </TouchableOpacity>
             <View style={{flex: 1.1, flexDirection: "row"}}>
-              <TouchableOpacity style={[teleopStyles.UndoButton, { width: 300, marginBottom: 10, marginRight:5, marginLeft: 10 }]} onPress={() => undo()}>
+              <TouchableOpacity style={[teleopStyles.UndoButton, { width: 300, marginBottom: 10, marginRight:5 }]} onPress={() => undo()}>
                 <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont]}>Undo</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity style={[teleopStyles.NextButton, { width: 300, marginRight: 10, marginBottom: 10, marginLeft: 5, justifyContent: 'center', alignItems: 'center' }]} onPress={() => navigate()}>
+              <TouchableOpacity style={[teleopStyles.NextButton, { width: 300, marginBottom: 10, marginLeft: 5, justifyContent: 'center', alignItems: 'center' }]} onPress={() => navigate()}>
                 <Text style={[teleopStyles.PrematchFont, teleopStyles.PrematchButtonFont, {textAlign: 'center'}]}>Continue to Postmatch</Text>
               </TouchableOpacity>
             </View>
@@ -360,13 +360,13 @@ function Teleop(props) {
       alignItems: 'center',
       justifyContent: 'center',
   },
-    PrematchFont: {
-      fontFamily: 'Helvetica-Light',
-      fontSize: 20
+  PrematchFont: {
+    fontFamily: 'Helvetica-Light',
+    fontSize: 20
   },
-    PrematchButtonFont: {
-      color: 'white',
-      fontSize: 20
+  PrematchButtonFont: {
+    color: 'white',
+    fontSize: 23
   },
 });
 

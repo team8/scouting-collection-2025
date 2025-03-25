@@ -22,13 +22,13 @@ function AutoIntakeModal(props) {
                             props.addAction('substationIntake')
                             props.setIntakeModalVisible(false)
                         }}>
-                            <Text style={intakeModalStyles.ButtonFont}>Source Intake</Text>
+                            <Text style={intakeModalStyles.ButtonFont}>Source</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={intakeModalStyles.GroundSubstation} onPress={() => {
                             props.addAction('groundIntake')
                             props.setIntakeModalVisible(false)
                         }}>
-                            <Text style={intakeModalStyles.ButtonFont}>Ground Intake</Text>
+                            <Text style={intakeModalStyles.ButtonFont}>Ground</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={intakeModalStyles.FailedIntake} onPress={() => {
                             props.addAction('failedSubstationIntake')
@@ -57,8 +57,7 @@ function AutoIntakeModal(props) {
 const intakeModalStyles = StyleSheet.create({
     ButtonFont: {
         color: 'white',
-        fontSize: 25,
-        justifyContent: 'center',
+        fontSize: 20,
         alignSelf: 'center',
         alignContent: 'center',
         textAlign: 'center'
