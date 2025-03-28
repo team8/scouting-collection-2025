@@ -128,8 +128,8 @@ function Postmatch(props) {
                     <Slider
                         thumbTintColor='#24a2b6'
                         value={driverRating}
-                        minimumValue={0.0}
-                        maximumValue={5.0}
+                        minimumValue={0}
+                        maximumValue={5}
                         step={1}
                         onValueChange={(dr) => setDriverRating(dr)} 
                     />
@@ -140,8 +140,8 @@ function Postmatch(props) {
                     <Slider
                         thumbTintColor='#24a2b6'
                         value={defenseRating}
-                        minimumValue={-1.0}
-                        maximumValue={5.0}
+                        minimumValue={-1}
+                        maximumValue={5}
                         step={1}
                         onValueChange={(d) => setDefenseRating(d)} 
                     />
